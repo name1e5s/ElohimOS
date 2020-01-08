@@ -12,6 +12,8 @@ endif
 
 .PHONY: build build_bootloader run
 
+all: build build_bootloader
+
 build:
 	cargo xbuild --target src/arch/x86_64/target/x86_64.json $(BUILD_ARGS)
 
