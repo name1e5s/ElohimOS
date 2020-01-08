@@ -37,7 +37,7 @@ fn efi_main(image: Handle, system_table: SystemTable<Boot>) -> Status {
     // Start initlize process
     uefi_services::init(&system_table).expect_success("failed to initialize utilities");
     info!("Hello UEFI!");
-    
+
     // Get kernel path
     info!("Kernel Path: {}", DEFAULT_CONFIG.efi_path);
     let services = system_table.boot_services();
@@ -90,7 +90,7 @@ fn efi_main(image: Handle, system_table: SystemTable<Boot>) -> Status {
     }
     page_table::map_elf(&elf, &mut page_table, &mut UEFIFrameAllocator(services))
         .expect("ERR: Map ELF failed.");
-    
+
     // Map low addresses
     page_table::map_physical_memory(
         DEFAULT_CONFIG.physical_memory_address,
@@ -119,7 +119,6 @@ fn efi_main(image: Handle, system_table: SystemTable<Boot>) -> Status {
     // GO~
     jump_to_entry(&device_info);
 }
-
 
 fn jump_to_entry(device_info: *const DeviceInfo) -> ! {
     unsafe {
