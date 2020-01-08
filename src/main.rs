@@ -5,12 +5,19 @@ use core::panic::PanicInfo;
 
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
-    let frame_buffer = (0xFFFF800000000000u64 + 0x80000000u64) as *mut u64;
+    let frame_buffer = (0xFFFF800000000000u64 + 0x80000000u64) as *mut u32;
 
     for i in 0..768 {
         for j in 0..1024 {
+            let color: u32 = match (i >> 5) % 4 {
+                0 => 0xFF000000,
+                1 => 0xFFFF0000,
+                2 => 0xFF00FF00,
+                3 => 0xFF0000FF,
+                _ => unreachable!()
+            };
             unsafe {
-                *frame_buffer.offset(i as isize * 0x400 + j as isize) = 0xFF00FF00;
+                *frame_buffer.offset(i as isize * 0x400 + j as isize) = color;
             }
         }
     }
