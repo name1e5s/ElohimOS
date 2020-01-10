@@ -3,7 +3,7 @@ EFI ?= src/arch/x86_64/bootloader/target/x86_64-unknown-uefi/$(MODE)/bootloader.
 ELF ?= target/x86_64/$(MODE)/elohim
 OVMF := OVMF-pure-efi.fd
 ESP := esp
-QEMU_ARGS := -net none
+QEMU_ARGS := -net none -serial mon:stdio 
 ROOT := `pwd`
 
 ifeq (${MODE}, release)

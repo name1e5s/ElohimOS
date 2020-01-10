@@ -1,10 +1,23 @@
 #![no_std]
 #![no_main]
 
+#[macro_use]
+extern crate x86_64;
+
+#[macro_use]
+extern crate log;
+
+#[macro_use]
+mod driver;
+
 use core::panic::PanicInfo;
+use driver::serial::Serial;
 
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
+    driver::serial_init();
+    info!("Hello world from elohim");
+
     let frame_buffer = (0xFFFF800000000000u64 + 0x80000000u64) as *mut u32;
 
     for i in 0..768 {
@@ -14,7 +27,7 @@ pub extern "C" fn _start() -> ! {
                 1 => 0xFFFF0000,
                 2 => 0xFF00FF00,
                 3 => 0xFF0000FF,
-                _ => unreachable!()
+                _ => unreachable!(),
             };
             unsafe {
                 *frame_buffer.offset(i as isize * 0x400 + j as isize) = color;

@@ -4,3 +4,8 @@ version = "0.0.0"
 edition = "2018"
 authors = ["Name1e5s <name1e5s@bupt.edu.cn>"]
 description = "A simple OS project."
+
+[dependencies]
+x86_64 = "0.7"
+bitflags = "1.2.1"
+log = "0.4"
