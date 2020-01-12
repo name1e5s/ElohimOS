@@ -5,6 +5,7 @@
 pub mod arch;
 
 extern crate x86_64;
+extern crate uefi;
 
 #[macro_use]
 extern crate log;

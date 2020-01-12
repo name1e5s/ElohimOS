@@ -10,3 +10,6 @@ x86_64 = "0.7"
 bitflags = "1.2.1"
 log = "0.4"
 bootloader = { path = "./src/arch/x86_64/bootloader" }
+lazy_static = { version = "1.4.0", features = ["spin_no_std"] }
+spin = "0.5.2"
+uefi = "0.3.2"

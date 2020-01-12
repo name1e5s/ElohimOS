@@ -1,14 +1,19 @@
 #[macro_use]
 mod driver;
+mod gdt;
 
 use core::panic::PanicInfo;
-use bootloader::info::DeviceInfo;
+use bootloader::info::*;
+
+use uefi::table::boot::MemoryType;
 
 #[no_mangle]
 pub extern "C" fn _start(info: &'static DeviceInfo) -> ! {
     driver::serial_init();
     info!("Hello world from elohim");
-    info!("{:?}", info);
+    info!("Init gdt...");
+    gdt::init();
+    print_physical_memory(info);
     let frame_buffer = (0xFFFF800000000000u64 + 0x80000000u64) as *mut u32;
 
     for i in 0..768 {
@@ -27,6 +32,16 @@ pub extern "C" fn _start(info: &'static DeviceInfo) -> ! {
     }
 
     loop {}
+}
+
+fn print_physical_memory(info: &DeviceInfo) {
+    for region in info.memory_map.clone().iter {
+        if region.ty == MemoryType::CONVENTIONAL {
+            let start_addr = region.phys_start as usize;
+            let end_addr = start_addr + region.page_count as usize * 0x1000;
+            info!("Physical memory range: [{:x}, {:x}]", start_addr, end_addr);
+        }
+    }
 }
 
 /// This function is called on panic.
