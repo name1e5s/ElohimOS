@@ -12,7 +12,7 @@ pub fn map_elf(
     page_table: &mut impl Mapper<Size4KiB>,
     frame_allocator: &mut impl FrameAllocator<Size4KiB>,
 ) -> Result<(), MapToError> {
-    info!("mapping ELF");
+    info!("Mapping ELF");
     let kernel_start = PhysAddr::new(elf.input.as_ptr() as u64);
     for segment in elf.program_iter() {
         map_segment(&segment, kernel_start, page_table, frame_allocator)?;
@@ -26,6 +26,7 @@ fn map_segment(
     page_table: &mut impl Mapper<Size4KiB>,
     frame_allocator: &mut impl FrameAllocator<Size4KiB>,
 ) -> Result<(), MapToError> {
+    info!("{:x} -> {:x}", segment.virtual_addr(), segment.physical_addr());
     match segment.get_type().unwrap() {
         program::Type::Load => {
             let mem_size = segment.mem_size();
@@ -88,7 +89,6 @@ fn map_segment(
                             UnmapError::InvalidFrameAddress(_) => unreachable!(),
                         });
                     }
-
                     unsafe {
                         page_table
                             .map_to(last_page, new_frame, page_table_flags, frame_allocator)?

@@ -9,7 +9,7 @@ static mut COM1: Serial = unsafe { Serial::new(0x3F8) };
 #[macro_export]
 macro_rules! print {
     ($($arg:tt)*) => ({
-        $crate::driver::print(format_args!($($arg)*));
+        $crate::arch::driver::print(format_args!($($arg)*));
     });
 }
 
@@ -43,6 +43,6 @@ static mut LOGGER: Logger = Logger {};
 pub fn serial_init() {
     unsafe {
         COM1.init();
-        log::set_logger(&LOGGER).map(|()| log::set_max_level(LevelFilter::Info));
+        log::set_logger(&LOGGER).map(|()| log::set_max_level(LevelFilter::Info)).expect("Set logger failed");
     }
 }

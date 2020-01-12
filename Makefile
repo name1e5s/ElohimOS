@@ -1,5 +1,5 @@
-MODE ?= debug
-EFI ?= src/arch/x86_64/bootloader/target/x86_64-unknown-uefi/$(MODE)/bootloader.efi
+MODE ?= release
+EFI ?= src/arch/x86_64/bootloader/target/x86_64-unknown-uefi/release/bootloader.efi
 ELF ?= target/x86_64/$(MODE)/elohim
 OVMF := OVMF-pure-efi.fd
 ESP := esp

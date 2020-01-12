@@ -89,7 +89,7 @@ fn efi_main(image: Handle, system_table: SystemTable<Boot>) -> Status {
         Efer::update(|f| f.insert(EferFlags::NO_EXECUTE_ENABLE));
     }
     page_table::map_elf(&elf, &mut page_table, &mut UEFIFrameAllocator(services))
-        .expect("ERR: Map ELF failed.");
+        .expect("ERR: Map ELF failed");
 
     // Map low addresses
     page_table::map_physical_memory(
@@ -98,11 +98,10 @@ fn efi_main(image: Handle, system_table: SystemTable<Boot>) -> Status {
         &mut page_table,
         &mut UEFIFrameAllocator(services),
     );
-
     unsafe {
         Cr0::update(|f| f.insert(Cr0Flags::WRITE_PROTECT));
     }
-
+    info!("exit boot services");
     // Exit boot services
     let (_rt, mmap_iter) = system_table
         .exit_boot_services(image, mmap_storage)
