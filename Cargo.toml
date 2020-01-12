@@ -9,3 +9,4 @@ description = "A simple OS project."
 x86_64 = "0.7"
 bitflags = "1.2.1"
 log = "0.4"
+bootloader = { path = "./src/arch/x86_64/bootloader" }

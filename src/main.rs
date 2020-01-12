@@ -7,14 +7,16 @@ extern crate x86_64;
 #[macro_use]
 extern crate log;
 
+extern crate bootloader;
+
 #[macro_use]
 mod driver;
 
 use core::panic::PanicInfo;
-use driver::serial::Serial;
+use bootloader::info::DeviceInfo;
 
 #[no_mangle]
-pub extern "C" fn _start() -> ! {
+pub extern "C" fn _start(info: &'static DeviceInfo) -> ! {
     driver::serial_init();
     info!("Hello world from elohim");
 
